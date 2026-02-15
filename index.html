@@ -1,139 +1,75 @@
 <!doctype html>
 <html lang="fa" dir="rtl">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>HR Bot</title>
 
-  <!-- n8n chat widget styles -->
   <link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
-
-  <style>
-    body {
-      margin: 0;
-      font-family: Vazirmatn, IRANSansX, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      background: radial-gradient(1200px 800px at 100% 0%, #EEF2FF 0%, #F6F7FB 45%, #F1F5F9 100%);
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 24px;
-    }
-
-    .card {
-      width: min(1100px, 100%);
-      background: rgba(255,255,255,0.75);
-      border: 1px solid rgba(15,23,42,0.08);
-      border-radius: 20px;
-      box-shadow: 0 24px 60px rgba(2,6,23,0.12);
-      overflow: hidden;
-      display: grid;
-      grid-template-columns: 1fr 460px;
-    }
-
-    .left {
-      padding: 28px;
-    }
-
-    h1 {
-      margin: 0 0 8px;
-      font-size: 22px;
-      color: #0B1220;
-    }
-
-    p {
-      margin: 0;
-      color: #334155;
-      line-height: 1.9;
-      font-size: 15px;
-    }
-
-    .badge {
-      display: inline-block;
-      margin-top: 14px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(79,70,229,0.12);
-      color: #3730A3;
-      font-size: 12px;
-      font-weight: 600;
-    }
-
-    /* مهم: CSS vars رو روی کانتینر ویجت ست می‌کنیم */
-    #n8n-chat {
-      --chat--color-primary: #4F46E5;
-      --chat--color-primary-shade-50: #4338CA;
-      --chat--color-primary-shade-100: #3730A3;
-
-      --chat--color-secondary: #10B981;
-      --chat--color-secondary-shade-50: #059669;
-
-      --chat--color-light: #F6F7FB;
-      --chat--color-dark: #0B1220;
-
-      --chat--border-radius: 16px;
-      --chat--window--width: 440px;
-      --chat--window--height: 680px;
-
-      --chat--header--background: linear-gradient(135deg, #0B1220 0%, #111B2E 60%, #0B1220 100%);
-      --chat--header--color: #F8FAFC;
-
-      --chat--message--user--background: #10B981;
-      --chat--message--user--color: #fff;
-
-      --chat--message--bot--background: #fff;
-      --chat--message--bot--color: #0F172A;
-
-      --chat--body--background: radial-gradient(1200px 800px at 100% 0%, #EEF2FF 0%, #F6F7FB 45%, #F1F5F9 100%);
-      --chat--footer--background: rgba(255,255,255,0.95);
-    }
-
-    /* RTL بهتر داخل پیام‌ها */
-    #n8n-chat .chat-message,
-    #n8n-chat .chat-body,
-    #n8n-chat .chat-input {
-      direction: rtl;
-      text-align: right;
-    }
-
-    /* ولی کد/لینک LTR */
-    #n8n-chat code,
-    #n8n-chat pre,
-    #n8n-chat a {
-      direction: ltr;
-      unicode-bidi: plaintext;
-    }
-
-    @media (max-width: 980px) {
-      .card {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+  <link href="./style.css" rel="stylesheet" />
 </head>
 
 <body>
-  <div class="card">
-    <div class="left">
-      <h1>چت پشتیبانیhr222 منابع انسانی</h1>
-      <p>
-        
-        اطلاعات را کوتاه و دقیق بپرس.
-      </p>
-      <span class="badge">Powered by n8n + OpenAI</span>
-    </div>
+  <!-- Theme Toggle -->
+  <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle theme">
+    🌙
+  </button>
 
-    <div id="n8n-chat"></div>
-  </div>
+  <div id="n8n-chat"></div>
 
   <script type="module">
     import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
 
     createChat({
-      // این URL همون /chat هست
       webhookUrl: 'https://moshaver71.app.n8n.cloud/webhook/151b877a-8cfd-4390-a80a-dc5982c603ce/chat',
       target: '#n8n-chat',
-      mode: 'window'
+      mode: 'fullscreen',
+      defaultLanguage: 'fa',
+	initialMessages: [
+		'Hi there! 👋',
+		'My name is Nathan. How can I assist you today?'
+	],
+      i18n: {
+        en: {
+          title: 'Hi there! 👋',
+          subtitle: "Start a chat. We're here to help you 24/7.",
+          footer: '',
+          getStarted: 'New Conversation',
+          inputPlaceholder: 'Type your question..',
+        },
+        fa: {
+          title: 'Shirin Vatan',
+          subtitle: "من ربات دستیار وطن هستم چه کمکی می تونم براتون انجام؟",
+          footer: '',
+          getStarted: 'گفتگوی جدید',
+          inputPlaceholder: 'سوال خود را بپرسید',
+        },
+      },
+    });
+
+    // Theme init
+    const saved = localStorage.getItem('hrbot_theme');
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initial = saved || (prefersDark ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', initial);
+
+    const btn = document.getElementById('themeToggle');
+    const syncIcon = () => {
+      const t = document.documentElement.getAttribute('data-theme');
+      btn.textContent = t === 'dark' ? '☀️' : '🌙';
+      btn.title = t === 'dark' ? 'حالت روشن' : 'حالت تاریک';
+    };
+    syncIcon();
+
+    btn.addEventListener('click', () => {
+      const t = document.documentElement.getAttribute('data-theme');
+      const next = t === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('hrbot_theme', next);
+      syncIcon();
     });
   </script>
 </body>
+
 </html>

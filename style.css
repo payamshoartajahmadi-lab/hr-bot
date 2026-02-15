@@ -1,0 +1,317 @@
+/* =========================
+   Reset + Font
+========================= */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root{
+  --radius: 18px;
+  --maxw: 980px;
+
+  /* Brand orange */
+  --accent: #f18825;
+  --accent2: #ff9a3d;
+}
+
+/* =========================
+   Themes
+========================= */
+:root[data-theme="dark"]{
+  --bg: #0b0f14;
+  --panel: #0f1720;
+  --panel2:#0c131c;
+  --border: rgba(255,255,255,.10);
+
+  --text: rgba(255,255,255,.92);
+  --muted: rgba(255,255,255,.62);
+
+  --botBubble: rgba(255,255,255,.05);
+  --userBubble: rgba(255,255,255,.08);
+
+  --inputBg: rgba(0,0,0,.28);
+  --shadow: 0 12px 40px rgba(0,0,0,.45);
+}
+
+:root[data-theme="light"]{
+  --bg: #f5f7fb;
+  --panel: #ffffff;
+  --panel2:#f6f7f9;
+  --border: rgba(0,0,0,.10);
+
+  --text: rgba(0,0,0,.88);
+  --muted: rgba(0,0,0,.56);
+
+  --botBubble: rgba(0,0,0,.03);
+  --userBubble: rgba(0,0,0,.05);
+
+  --inputBg: rgba(0,0,0,.05);
+  --shadow: 0 10px 30px rgba(0,0,0,.12);
+}
+
+html, body{
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+               "Vazirmatn", "IRANSansX", "IRANSans", "Tahoma", Arial, sans-serif;
+}
+
+/* =========================
+   Host container
+========================= */
+#n8n-chat{
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 18px 14px;
+}
+
+/* main chat wrapper */
+#n8n-chat .chat-layout.chat-wrapper.n8n-chat{
+  width: min(var(--maxw), 100%);
+  height: 100%;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  background: linear-gradient(180deg, var(--panel), var(--panel2));
+  display: flex;
+  flex-direction: column;
+}
+
+/* =========================
+   Header: ORANGE
+========================= */
+#n8n-chat .chat-header{
+  background: linear-gradient(180deg, var(--accent), var(--accent2));
+  color: #111;
+  padding: 18px 20px;
+  border-bottom: 1px solid rgba(0,0,0,.12);
+}
+
+#n8n-chat .chat-header .chat-heading h1{
+  font-size: 26px;
+  line-height: 1.2;
+  font-weight: 800;
+  color: #111;
+}
+
+#n8n-chat .chat-header p{
+  margin-top: 6px;
+  font-size: 14px;
+  color: rgba(0,0,0,.72);
+}
+
+/* =========================
+   Body + Messages
+========================= */
+#n8n-chat .chat-body{
+  flex: 1;
+  overflow: auto;
+  padding: 18px 16px;
+}
+
+#n8n-chat .chat-messages-list{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* message bubble */
+#n8n-chat .chat-message{
+  max-width: 86%;
+  border-radius: 16px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  box-shadow: 0 6px 18px rgba(0,0,0,.10);
+}
+
+/* bot message */
+#n8n-chat .chat-message.chat-message-from-bot{
+  align-self: flex-start;
+  background: var(--botBubble);
+}
+
+/* (اگر بعدا پیام کاربر هم داشتی) */
+#n8n-chat .chat-message.chat-message-from-user{
+  align-self: flex-end;
+  background: var(--userBubble);
+}
+
+/* ✅ fix: text visibility inside markdown */
+#n8n-chat .chat-message-markdown,
+#n8n-chat .chat-message-markdown p,
+#n8n-chat .chat-message-markdown span,
+#n8n-chat .chat-message-markdown li,
+#n8n-chat .chat-message-markdown div{
+  color: var(--text) !important;
+}
+
+#n8n-chat .chat-message-markdown a{
+  color: var(--accent) !important;
+  text-decoration: none;
+}
+#n8n-chat .chat-message-markdown a:hover{
+  text-decoration: underline;
+}
+
+/* =========================
+   Footer / Input
+========================= */
+#n8n-chat .chat-footer{
+  border-top: 1px solid var(--border);
+  background: rgba(255,255,255,.02);
+  padding: 12px;
+}
+
+#n8n-chat .chat-input{
+  width: 100%;
+}
+
+#n8n-chat .chat-inputs{
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+#n8n-chat textarea[data-test-id="chat-input"]{
+  width: 100%;
+  resize: none;
+  background: var(--inputBg);
+  color: var(--text) !important;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 12px 14px;
+  outline: none;
+  line-height: 1.4;
+  min-height: 48px;
+}
+
+#n8n-chat textarea[data-test-id="chat-input"]::placeholder{
+  color: var(--muted);
+}
+
+/* send button */
+#n8n-chat .chat-input-send-button{
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: rgba(0,0,0,.06);
+  color: var(--text);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: transform .08s ease, background .12s ease;
+}
+
+#n8n-chat .chat-input-send-button:hover{
+  background: rgba(0,0,0,.10);
+}
+#n8n-chat .chat-input-send-button:active{
+  transform: scale(.98);
+}
+
+/* disabled state */
+#n8n-chat .chat-input-send-button:disabled{
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+/* =========================
+   Theme toggle button (needs HTML button)
+========================= */
+.theme-toggle{
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  z-index: 999999;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.06);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  color: var(--text);
+  font-size: 18px;
+}
+
+/* =========================
+   Scrollbar (optional)
+========================= */
+#n8n-chat *::-webkit-scrollbar{ width: 10px; height: 10px; }
+#n8n-chat *::-webkit-scrollbar-thumb{
+  background: rgba(127,127,127,.35);
+  border-radius: 999px;
+  border: 2px solid rgba(0,0,0,0);
+  background-clip: padding-box;
+}
+#n8n-chat *::-webkit-scrollbar-thumb:hover{ background: rgba(127,127,127,.50); }
+
+@media (max-width: 900px){
+  #n8n-chat{ padding: 10px; }
+  #n8n-chat .chat-layout.chat-wrapper.n8n-chat{ border-radius: 14px; }
+  #n8n-chat .chat-message{ max-width: 92%; }
+}
+
+
+/* =========================
+   FIX DARK MODE (n8n overrides)
+   Add this at the END of style.css
+========================= */
+
+/* force the whole widget surfaces to follow our vars in dark */
+:root[data-theme="dark"] #n8n-chat .chat-layout.chat-wrapper.n8n-chat{
+  background: linear-gradient(180deg, var(--panel), var(--panel2)) !important;
+}
+
+/* the main issue: body stays light unless forced */
+:root[data-theme="dark"] #n8n-chat .chat-body{
+  background: linear-gradient(180deg, var(--panel), var(--panel2)) !important;
+}
+
+/* messages list background too (some builds set it separately) */
+:root[data-theme="dark"] #n8n-chat .chat-messages-list{
+  background: transparent !important;
+}
+
+/* bubbles must be dark-friendly */
+:root[data-theme="dark"] #n8n-chat .chat-message.chat-message-from-bot{
+  background: rgba(255,255,255,.06) !important;
+  border-color: rgba(255,255,255,.10) !important;
+}
+
+:root[data-theme="dark"] #n8n-chat .chat-message.chat-message-from-user{
+  background: rgba(255,255,255,.10) !important;
+  border-color: rgba(255,255,255,.12) !important;
+}
+
+/* text visibility inside markdown (n8n sometimes sets its own colors) */
+:root[data-theme="dark"] #n8n-chat .chat-message-markdown,
+:root[data-theme="dark"] #n8n-chat .chat-message-markdown *{
+  color: var(--text) !important;
+}
+
+/* footer/input area sometimes gets forced colors too */
+:root[data-theme="dark"] #n8n-chat .chat-footer{
+  background: rgba(255,255,255,.03) !important;
+  border-top-color: rgba(255,255,255,.10) !important;
+}
+
+:root[data-theme="dark"] #n8n-chat textarea[data-test-id="chat-input"]{
+  background: rgba(0,0,0,.35) !important;
+  color: var(--text) !important;
+  border-color: rgba(255,255,255,.12) !important;
+}
+
+:root[data-theme="dark"] #n8n-chat textarea[data-test-id="chat-input"]::placeholder{
+  color: rgba(255,255,255,.55) !important;
+}
+
+:root[data-theme="dark"] #n8n-chat .chat-input-send-button{
+  background: rgba(255,255,255,.06) !important;
+  color: var(--text) !important;
+  border-color: rgba(255,255,255,.12) !important;
+}
